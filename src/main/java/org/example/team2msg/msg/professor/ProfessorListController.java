@@ -1,4 +1,5 @@
-package org.example.team2msg.msg.message;
+package org.example.team2msg.msg.professor;
+
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,13 +10,11 @@ import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
 
-@WebServlet (value = "/proflist")
 @Log4j2
-public class MsgController extends HttpServlet {
-
+@WebServlet(value = "/proflist")
+public class ProfessorListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log.info("doGet");
-        req.getRequestDispatcher("/WEB-INF/professor/proflist.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/professor/proflist.jsp").forward(req,resp);
     }
 }

@@ -1,4 +1,4 @@
-package org.example.team2msg.msg.student;
+package org.example.team2msg.msg.message;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,18 +9,14 @@ import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
 
+@WebServlet (value = "/profdetail")
 @Log4j2
-@WebServlet(value = "/studentlist")
-public class StudentController extends HttpServlet {
+public class ProfMsgController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log.info("StudentList doGet");
-
-        req.getRequestDispatcher("/WEB-INF/student/studentlist.jsp").forward(req, resp);
+        log.info("doGet");
+        req.getRequestDispatcher("/WEB-INF/professor/detail.jsp").forward(req, resp);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    }
 }
