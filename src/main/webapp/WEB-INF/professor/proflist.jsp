@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
     <title>Professor List Page</title>
@@ -35,10 +36,11 @@
         }
 
         .pfl-left h2 {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
-        .pfl-left button {
+        .pfl-button {
+            display: inline-block;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
@@ -46,6 +48,25 @@
             background-color: white;
             color: black;
             font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+            text-decoration: none;
+            width: 150px; /* 고정된 너비를 설정 */
+        }
+
+        .pfl-button-primary {
+            background-color: white;
+            color: black;
+        }
+
+        .pfl-button-secondary {
+            background-color: white;
+            color: black;
+        }
+
+        .pfl-button-danger {
+            background-color: #dc3545;
+            color: white;
         }
 
         .pfl-right {
@@ -76,6 +97,10 @@
             color: #757575;
         }
 
+        .pfl-tabs a {
+            text-decoration: none;
+        }
+
         .pfl-messages {
             list-style: none;
             padding: 0;
@@ -100,20 +125,59 @@
             width: 40%;
         }
 
+        .pfl-message2 .pfl-date {
+            width: 15%;
+            white-space: nowrap;
+        }
+
         .pfl-message2 .pfl-status {
             width: 20%;
             text-align: right;
         }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination .page-item {
+            margin: 0 5px;
+        }
+
+        .pagination .page-link {
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .pagination .page-link:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .pagination .active .page-link {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
     </style>
 </head>
 <body>
+
 <%@include file="../include/header.jsp"%>
+
 <div class="pfl-container">
     <div class="pfl-left">
         <h2>안녕하세요<br>${professorId} 교수님</h2>
-        <h2><br>본인이메일: ${professorEmail}</h2>
-        <a href="/professor/sendmsg"><button>쪽지 쓰기</button></a>
-        <a href="/professor/sendmsg"><button>전체쪽지쓰기</button></a>
+
+        <a href="/professor/sendmsg" class="pfl-button pfl-button-primary">쪽지 쓰기</a>
+        <a href="/professor/broadcastmsg" class="pfl-button pfl-button-secondary">전체쪽지쓰기</a>
+        <form action="/proflogout" method="post">
+            <button type="submit" class="pfl-button pfl-button-danger">로그아웃</button>
+        </form>
     </div>
     <div class="pfl-right">
         <div class="pfl-tabs">
@@ -128,6 +192,9 @@
                     <span class="pfl-title">
                         <a href="/detail?messageId=${message.mno}">${message.title}</a>
                     </span>
+                    <span class="pfl-date">
+                        <fmt:formatDate value="${message.senddate}" pattern="yyyy-MM-dd"/>
+                    </span>
                     <span class="pfl-status">
                         <c:choose>
                             <c:when test="${message.is_read}">
@@ -141,6 +208,30 @@
                 </li>
             </c:forEach>
         </ul>
+
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <c:if test="${pageInfo.prev}">
+                    <li class="page-item">
+                        <a class="page-link" href="?page=${pageInfo.start - 1}" aria-label="Previous">
+                            <span aria-hidden="true">prev</span>
+                        </a>
+                    </li>
+                </c:if>
+                <c:forEach begin="${pageInfo.start}" end="${pageInfo.end}" var="i">
+                    <li class="page-item ${i == pageInfo.page ? 'active' : ''}">
+                        <a class="page-link" href="?page=${i}">${i}</a>
+                    </li>
+                </c:forEach>
+                <c:if test="${pageInfo.next}">
+                    <li class="page-item">
+                        <a class="page-link" href="?page=${pageInfo.end + 1}" aria-label="Next">
+                            <span aria-hidden="true">next</span>
+                        </a>
+                    </li>
+                </c:if>
+            </ul>
+        </nav>
     </div>
 </div>
 </body>

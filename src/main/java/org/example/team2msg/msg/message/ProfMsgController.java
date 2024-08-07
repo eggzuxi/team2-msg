@@ -37,11 +37,11 @@ public class ProfMsgController extends HttpServlet {
             try {
                 int messageId = Integer.parseInt(messageIdStr);
 
-
                 Optional<MsgVO> messageOptional = null;
                 try {
                     messageOptional = msgDAO.get(messageId, receiver);
                 } catch (Exception e) {
+                    e.printStackTrace();
                     throw new RuntimeException(e);
                 }
 

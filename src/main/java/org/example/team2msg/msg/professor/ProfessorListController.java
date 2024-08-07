@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpSession;
 import lombok.extern.log4j.Log4j2;
 import org.example.team2msg.msg.message.dao.MsgDAO;
 import org.example.team2msg.msg.message.MsgVO;
+import org.example.team2msg.common.PageInfo;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -17,7 +19,7 @@ import java.util.List;
 public class ProfessorListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
+        HttpSession session = req.getSession();
 
         if (session == null) {
             log.info("Session not found, redirecting to login");
@@ -32,9 +34,16 @@ public class ProfessorListController extends HttpServlet {
             return;
         }
 
-        try {
-            List<MsgVO> messages = MsgDAO.INSTANCE.list(professorId);
+        int page = Integer.parseInt(req.getParameter("page") == null ? "1" : req.getParameter("page"));
+        int size = 10; // 페이지당 표시할 메시지 수
 
+        try {
+            int total = MsgDAO.INSTANCE.getTotalCount(professorId);
+            PageInfo pageInfo = new PageInfo(page, size, total);
+
+            List<MsgVO> messages = MsgDAO.INSTANCE.getReceivedMessages(professorId, page, size);
+
+            req.setAttribute("pageInfo", pageInfo);
             req.setAttribute("messages", messages);
             req.getRequestDispatcher("/WEB-INF/professor/proflist.jsp").forward(req, resp);
         } catch (Exception e) {
