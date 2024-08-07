@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.log4j.Log4j2;
 import org.example.team2msg.msg.student.dao.StudentDAO;
-import org.example.team2msg.msg.student.vo.StudentVO;
+import org.example.team2msg.msg.student.StudentVO;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -43,16 +43,16 @@ public class LoginController extends HttpServlet {
         try {
             Optional<StudentVO> result = StudentDAO.INSTANCE.get(sid, spw);
             result.ifPresentOrElse(studentVO -> {
-                session.setAttribute("sid", studentVO);
+                session.setAttribute("student", studentVO);
                 try {
-                    resp.sendRedirect("/studentlist"); // 로그인 성공 시 mypage로 리다이렉트 !
+                    resp.sendRedirect("/studentlist"); // 로그인 성공 시 studentlist로 리다이렉트 !
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }, () -> {
                 try {
                     log.info("Login failed");
-                    resp.sendRedirect("/login");
+                    resp.sendRedirect("/login?error=invalid_credentials"); // 사용자가 잘못된 정보를 입력
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -60,7 +60,7 @@ public class LoginController extends HttpServlet {
 
         } catch (Exception e) {
             log.error("Error login", e);
-            throw new RuntimeException(e);
+            resp.sendRedirect("/login?error=server_error");
         }
     }
 }

@@ -19,27 +19,36 @@ public class ProfessorloginController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String id = req.getParameter("ID");
-        String pw = req.getParameter("PASSWORD");
+        String pid = req.getParameter("ID");
+        String ppw = req.getParameter("PASSWORD");
 
+        log.info("Received login request with ID: {} and PASSWORD: {}", pid, ppw);
 
         //DB에서 사용자 정보를 확인해 정보를 얻어오기
         try {
-            Optional<ProfessorVO> result = ProfessorDAO.INSTANCE.get(id, pw);
-            result.ifPresentOrElse( memberVO -> {
-                Cookie loginCookie = new Cookie("Profid",id);
-                loginCookie.setPath("/");
-                loginCookie.setMaxAge(60*60*24);
+            Optional<ProfessorVO> result = ProfessorDAO.INSTANCE.get(pid, ppw);
+            result.ifPresentOrElse( professor -> {
 
-                resp.addCookie(loginCookie);
+                HttpSession session = req.getSession();
+                session.setAttribute("professor",professor);
+                session.setAttribute("professorId",professor.getPid());
+                session.setAttribute("professorEmail", professor.getPmail());
+
+                //쿠키 나중에 쓸데 있으면 사용하는걸로
+                //Cookie loginCookie = new Cookie("Profid",pid);
+                //loginCookie.setPath("/");
+                //loginCookie.setMaxAge(60*60*24);
+                //resp.addCookie(loginCookie);
 
                 try {
+                    log.info("Login successful for professor ID: {}", professor.getPid());
                     resp.sendRedirect("/proflist");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }, () -> {
                 try {
+                    log.info("FAILED LOGIN");
                     resp.sendRedirect("/proflogin");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
