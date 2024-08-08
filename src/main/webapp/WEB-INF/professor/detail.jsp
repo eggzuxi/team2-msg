@@ -70,7 +70,6 @@
             border: 1px solid #ccc;
         }
 
-
         .content {
             background-color: #ffffff;
             padding: 20px;
@@ -92,8 +91,23 @@
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             box-sizing: border-box;
+        }
+
+        .form-group.forms-delete {
+            display: flex;
+            justify-content: center;
+        }
+
+        .forms-delete button.delete-btn-prof  {
+            padding: 10px 20px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
         }
 
     </style>
@@ -126,6 +140,13 @@
             <label for="content">CONTENT</label>
             <textarea id="content" name="content" rows="10" readonly>${message.content}</textarea>
         </div>
+
+        <div class="form-group forms-delete">
+            <form action="/professor/deleteMsg?replyToId=${message.mno}" method="post">
+                <button type="submit" class="delete-btn-prof">DELETE</button>
+            </form>
+        </div>
+
     </div>
 </div>
 </body>

@@ -18,8 +18,8 @@
 
     .stl-container {
       display: flex;
-      width: 80%;
-      height: 80%;
+      width: 85%;
+      height: 85%;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
@@ -115,10 +115,16 @@
       width: 20%;
       text-align: right;
     }
+
+    .stl-title a {
+      text-decoration: none;
+      color: black;
+    }
+
     .stls-pagination {
       display: flex;
       justify-content: center;
-      margin-top: 20px;
+      margin-top: 10px;
     }
 
     .stls-pagination .page-item {
@@ -166,11 +172,13 @@
 
     <ul class="stl-messages">
       <c:set var="count" value="1"/>
-      <c:forEach var="message" items="${messages}">
+      <c:forEach var="message" items="${messages}" varStatus="status">
         <li class="stl-message2">
-          <span class="stl-index">${count}</span>
+          <span class="stl-index">${total - (page - 1)*size - status.index}</span>
           <c:set var="count" value="${count + 1}"/>
+
           <span class="stl-name">${message.sender}</span>
+
           <span class="stl-title">
              <a href="/studetail?messageId=${message.mno}">${message.title}</a>
           </span>

@@ -18,8 +18,8 @@
 
         .pfls-container {
             display: flex;
-            width: 80%;
-            height: 80%;
+            width: 85%;
+            height: 85%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -111,10 +111,15 @@
             white-space: nowrap;
         }
 
+        .pfls-title a {
+            text-decoration: none;
+            color: black;
+        }
+
         .pagination {
             display: flex;
             justify-content: center;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         .pagination .page-item {
@@ -163,7 +168,7 @@
         <ul class="pfls-messages">
             <c:forEach var="message" items="${messages}" varStatus="status">
                 <li class="pfls-message2">
-                    <span class="pfls-index">${status.count}.</span>
+                    <span class="pfls-index">${total - (page - 1)*size - status.index}.</span>
                     <span class="pfls-name">${message.receiver}</span>
                     <span class="pfls-title">
                         <a href="/detail?messageId=${message.mno}">${message.title}</a>

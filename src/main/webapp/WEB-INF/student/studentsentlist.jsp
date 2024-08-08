@@ -18,8 +18,8 @@
 
         .stls-container {
             display: flex;
-            width: 80%;
-            height: 80%;
+            width: 85%;
+            height: 85%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -117,10 +117,15 @@
             white-space: nowrap; /* 날짜를 한 줄로 출력 */
         }
 
+        .stls-title a {
+            text-decoration: none;
+            color: black;
+        }
+
         .stls-pagination {
             display: flex;
             justify-content: center;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         .stls-pagination .page-item {
@@ -170,9 +175,9 @@
 
         <ul class="stls-messages">
             <c:set var="count" value="1"/>
-            <c:forEach var="message" items="${messages}">
+            <c:forEach var="message" items="${messages}" varStatus="status">
                 <li class="stls-message2">
-                    <span class="stls-index">${count}</span>
+                    <span class="stls-index">${total - (page - 1)*size - status.index}</span>
                     <c:set var="count" value="${count + 1}"/>
                     <span class="stls-name">${message.receiver}</span>
                     <span class="stls-title">

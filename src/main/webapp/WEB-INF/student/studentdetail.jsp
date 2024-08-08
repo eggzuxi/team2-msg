@@ -74,6 +74,9 @@
             background-color: #ffffff;
             padding: 20px;
             width: 75%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .form-group {
@@ -94,14 +97,30 @@
             margin-bottom: 20px;
             box-sizing: border-box;
         }
+
+        .form-group.form-delete {
+            display: flex;
+            justify-content: center;
+        }
+
+        .form-delete button.delete-btn  {
+            padding: 10px 20px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="sidebar">
         <h2>안녕하세요<br>학생 ${student.sid} 님</h2>
+
         <div class="button-group">
-            <a href="/reply?id=${message.mno}"><button class="reply-button">Reply</button></a>
+            <a href="/student/sendmsg?replyId=${message.mno}"><button class="reply-button">Reply</button></a>
             <a href="/studentlist"><button type="button" class="secondary">List</button></a>
         </div>
     </div>
@@ -121,6 +140,11 @@
         <div class="form-group">
             <label for="content">CONTENT</label>
             <textarea id="content" name="content" rows="10" readonly>${message.content}</textarea>
+        </div>
+        <div class="form-group form-delete">
+            <form action="/student/deleteMsg?replyToId=${message.mno}" method="post">
+                <button type="submit" class="delete-btn">DELETE</button>
+            </form>
         </div>
     </div>
 </div>
